@@ -13,10 +13,9 @@ public class GuestbookServiceTest {
 
     @Autowired
     private GuestbookService service;
-
-    @Test
+/* // 컬럼추가
+   @Test
     public void testRegister() {
-
         GuestbookDTO guestbookDTO = GuestbookDTO.builder()
                 .title("Sample Title...")
                 .content("Sample Content...")
@@ -24,7 +23,7 @@ public class GuestbookServiceTest {
                 .build();
 
         System.out.println(service.register(guestbookDTO));
-    }
+    }*/
 
     @Test
     public void testList() {

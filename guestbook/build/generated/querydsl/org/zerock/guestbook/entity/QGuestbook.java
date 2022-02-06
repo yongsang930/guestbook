@@ -26,7 +26,7 @@ public class QGuestbook extends EntityPathBase<Guestbook> {
     public final NumberPath<Long> gno = createNumber("gno", Long.class);
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> modeDate = _super.modeDate;
+    public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
