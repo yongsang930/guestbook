@@ -22,11 +22,13 @@ public class GuestbookController {
 
     private final GuestbookService service; // final 선언
 
+    // 기본페이지 
     @GetMapping("/")
     public String index() {
         return "redirect:/guestbook/list";
     }
 
+    // 리스트 페이지
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
         log.info("list.........." + pageRequestDTO);
@@ -34,11 +36,13 @@ public class GuestbookController {
         model.addAttribute("result", service.getList(pageRequestDTO));
     }
 
+    // 등록 페이지로 이동
     @GetMapping("/register")
     public void register() {
         log.info("register get...");
     }
 
+    // 등록 후 페이지 이동
     @PostMapping("/register")
     public String registerPost(GuestbookDTO dto, RedirectAttributes redirectAttributes) {
         log.info("dto..." + dto);
@@ -51,10 +55,32 @@ public class GuestbookController {
         return "redirect:/guestbook/list";
     }
 
-    @GetMapping("/read")
+    // 읽기 페이지를 위해 gno, 직전 페이지 버튼을 위해 requestDTO를 받아와서 model에 담음
+    @GetMapping({"/read", "/modify"})
     public void read(long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
-        log.info("gno: + " + gno);
+        log.info("gno: " + gno);
         GuestbookDTO dto = service.read(gno);
         model.addAttribute("dto", dto);
+    }
+
+    @PostMapping("/modify")
+    public String modify(GuestbookDTO dto, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, RedirectAttributes redirectAttributes) {
+        log.info("post modify..........");
+        log.info("dto: " + dto);
+
+        service.modify(dto);
+
+        redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("gno", dto.getGno());
+
+        return "redirect:/guestbook/read";
+    }
+
+    @PostMapping("/remove")
+    public String remove(long gno, RedirectAttributes redirectAttributes) {
+        log.info("gno: " + gno);
+        service.remove(gno);
+        redirectAttributes.addFlashAttribute("msg", gno);
+        return "redirect:/guestbook/list";
     }
 }
